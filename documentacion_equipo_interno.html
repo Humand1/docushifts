@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humand Shift Manager - Guía del Usuario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .header .version {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding: 40px;
+            background: white;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        /* Process Flow */
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--gray-50);
+            border-radius: 15px;
+            overflow-x: auto;
+        }
+
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 150px;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -50px;
+            top: 30px;
+            font-size: 2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .process-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .process-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+
+        .process-description {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        /* Interface Mockup */
+        .interface-mockup {
+            background: var(--gray-100);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .mockup-window {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .mockup-titlebar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .mockup-titlebar::before {
+            content: '🚀';
+            margin-right: 10px;
+        }
+
+        .mockup-toolbar {
+            background: var(--gray-50);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .mockup-content {
+            display: flex;
+            min-height: 400px;
+        }
+
+        .mockup-panel {
+            padding: 20px;
+            border-right: 1px solid var(--gray-200);
+        }
+
+        .mockup-panel:last-child {
+            border-right: none;
+        }
+
+        .mockup-left { width: 30%; background: #fafbfc; }
+        .mockup-center { width: 40%; background: white; }
+        .mockup-right { width: 30%; background: #f8fafc; }
+
+        .mockup-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .mockup-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .mockup-button.secondary {
+            background: var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .mockup-input {
+            border: 1px solid var(--gray-300);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            border-color: var(--success-color);
+            color: #065f46;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            border-color: var(--warning-color);
+            color: #92400e;
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            border-color: var(--primary-color);
+            color: #1e40af;
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            border-color: var(--danger-color);
+            color: #991b1b;
+        }
+
+        /* Lists */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--success-color);
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .process-flow {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .process-step:not(:last-child)::after {
+                content: '↓';
+                right: auto;
+                top: auto;
+                bottom: -40px;
+            }
+
+            .mockup-content {
+                flex-direction: column;
+            }
+
+            .mockup-left, .mockup-center, .mockup-right {
+                width: 100%;
+            }
+        }
+
+        /* Quick Access Menu */
+        .quick-access {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .quick-access-item {
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-access-item.active {
+            background: var(--primary-color);
+            transform: scale(1.3);
+        }
+
+        @media (max-width: 768px) {
+            .quick-access {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Humand Shift Manager</h1>
+            <p class="subtitle">Guía Completa para el Equipo Interno</p>
+            <span class="version">Gestión Intuitiva de Turnos de Empleados</span>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('inicio')">🏠 Inicio</button>
+                <button class="nav-tab" onclick="showSection('primeros-pasos')">🚀 Primeros Pasos</button>
+                <button class="nav-tab" onclick="showSection('empleados')">👥 Gestión de Empleados</button>
+                <button class="nav-tab" onclick="showSection('turnos')">⏰ Configuración de Turnos</button>
+                <button class="nav-tab" onclick="showSection('flujos')">📋 Flujos de Trabajo</button>
+                <button class="nav-tab" onclick="showSection('avanzado')">⚙️ Funciones Avanzadas</button>
+                <button class="nav-tab" onclick="showSection('mejores-practicas')">💡 Mejores Prácticas</button>
+                <button class="nav-tab" onclick="showSection('problemas')">🔧 Solución de Problemas</button>
+            </div>
+
+            <!-- Inicio -->
+            <div id="inicio" class="content-section active">
+                <h2 class="section-title">Bienvenido a Humand Shift Manager</h2>
+                <p class="section-subtitle">
+                    Una herramienta intuitiva y poderosa para gestionar los turnos de tu equipo de manera eficiente. 
+                    Esta guía te ayudará a dominar todas las funcionalidades desde el primer día.
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">⚡</span>
+                        <h3 class="card-title">Gestión Rápida</h3>
+                        <p class="card-description">
+                            Configura turnos para múltiples empleados en minutos, no horas. 
+                            Usa plantillas predefinidas y funciones de copia masiva.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🎯</span>
+                        <h3 class="card-title">Precisión Total</h3>
+                        <p class="card-description">
+                            Sistema de validaciones automáticas que previene errores comunes 
+                            y garantiza la consistencia de los datos.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🔄</span>
+                        <h3 class="card-title">Integración Perfecta</h3>
+                        <p class="card-description">
+                            Conecta directamente con la API de Humand para sincronización 
+                            automática y actualizaciones en tiempo real.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">💾</span>
+                        <h3 class="card-title">Respaldo Automático</h3>
+                        <p class="card-description">
+                            Todas las operaciones se respaldan automáticamente. 
+                            Nunca pierdas configuraciones importantes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Consejo:</strong> Esta documentación está diseñada para uso práctico. 
+                    Cada sección incluye ejemplos reales y casos de uso específicos para tu día a día.
+                </div>
+
+                <h3 style="margin-top: 40px; margin-bottom: 20px; color: var(--primary-color);">¿Qué puedes hacer con esta herramienta?</h3>
+                <ul class="feature-list">
+                    <li>Gestionar turnos de equipos desde 5 hasta 500+ empleados</li>
+                    <li>Configurar horarios complejos (múltiples turnos, horarios nocturnos)</li>
+                    <li>Aplicar cambios masivos con validaciones automáticas</li>
+                    <li>Filtrar empleados por departamento, rol o cualquier segmentación</li>
+                    <li>Guardar y reutilizar configuraciones frecuentes</li>
+                    <li>Gestionar feriados y días especiales</li>
+                    <li>Recuperar configuraciones desde backups automáticos</li>
+                </ul>
+            </div>
+
+            <!-- Primeros Pasos -->
+            <div id="primeros-pasos" class="content-section">
+                <h2 class="section-title">Primeros Pasos</h2>
+                <p class="section-subtitle">
+                    Guía paso a paso para comenzar a usar Humand Shift Manager desde cero.
+                </p>
+
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="process-number">1</div>
+                        <div class="process-title">Abrir Aplicación</div>
+                        <div class="process-description">Ejecutar el programa desde el escritorio</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">2</div>
+                        <div class="process-title">Conectar API</div>
+                        <div class="process-description">Ingresar tu API Key de Humand</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">3</div>
+                        <div class="process-title">Cargar Empleados</div>
+                        <div class="process-description">Sincronizar lista de empleados</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">4</div>
+                        <div class="process-title">Configurar Turnos</div>
+                        <div class="process-description">Seleccionar empleados y fechas</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">5</div>
+                        <div class="process-title">Enviar</div>
+                        <div class="process-description">Aplicar cambios a Humand</div>
+                    </div>
+                </div>
+
+                <div class="interface-mockup">
+                    <div class="mockup-window">
+                        <div class="mockup-titlebar">Humand Shift Manager - Primera Conexión</div>
+                        <div class="mockup-toolbar">
+                            <span>API Key:</span>
+                            <input class="mockup-input" type="password" value="••••••••••••••••" style="width: 200px;">
+                            <button class="mockup-button">Conectar</button>
+                            <button class="mockup-button secondary" disabled>Cargar Usuarios</button>
+                            <span style="margin-left: auto; color: var(--warning-color);">Estado: Desconectado</span>
+                        </div>
+                        <div class="mockup-content">
+                            <div class="mockup-panel mockup-left">
+                                <h4 style="color: var(--gray-600); margin-bottom: 15px;">👥 Panel de Empleados</h4>
+                                <p style="color: var(--gray-500); font-style: italic;">
+                                    Conecta con la API para cargar la lista de empleados...
+                                </p>
+                            </div>
+                            <div class="mockup-panel mockup-center">
+                                <h4 style="color: var(--gray-600); margin-bottom: 15px;">📅 Calendario</h4>
+                                <p style="color: var(--gray-500); font-style: italic;">
+                                    El calendario se activará una vez que cargues los empleados...
+                                </p>
+                            </div>
+                            <div class="mockup-panel mockup-right">
+                                <h4 style="color: var(--gray-600); margin-bottom: 15px;">⚙️ Configuración</h4>
+                                <p style="color: var(--gray-500); font-style: italic;">
+                                    Selecciona empleados y fechas para comenzar...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Paso 1: Conexión con la API</h3>
+                <ol style="margin: 20px 0; padding-left: 20px;">
+                    <li><strong>Localiza el campo "API Key"</strong> en la barra superior izquierda</li>
+                    <li><strong>Pega tu clave de API</strong> (se mostrará como asteriscos por seguridad)</li>
+                    <li><strong>Haz clic en "Conectar"</strong> y espera la confirmación</li>
+                    <li><strong>Verifica el estado</strong> - debe cambiar a "Conectado"</li>
+                </ol>
+
+                <div class="alert alert-success">
+                    <strong>✅ Conexión Exitosa:</strong> Verás "Conectado" en la barra de estado y el botón "Cargar Usuarios" se habilitará.
+                </div>
+
+                <div class="alert alert-danger">
+                    <strong>❌ Error de Conexión:</strong> Verifica que tu API Key sea correcta y que tengas acceso a internet. 
+                    Si el problema persiste, contacta al administrador del sistema.
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Paso 2: Cargar Empleados</h3>
+                <ol style="margin: 20px 0; padding-left: 20px;">
+                    <li><strong>Haz clic en "Cargar Usuarios"</strong> (ahora habilitado)</li>
+                    <li><strong>Espera la carga</strong> - verás una barra de progreso</li>
+                    <li><strong>Confirma la carga</strong> - aparecerá la cantidad de usuarios cargados</li>
+                    <li><strong>Verifica la lista</strong> - los empleados aparecerán en el panel izquierdo</li>
+                </ol>
+
+                <div class="alert alert-info">
+                    <strong>💡 Tip:</strong> La primera carga puede tomar unos minutos dependiendo del tamaño de tu organización. 
+                    Los datos se guardan automáticamente para futuras sesiones.
+                </div>
+            </div>
+
+            <!-- Gestión de Empleados -->
+            <div id="empleados" class="content-section">
+                <h2 class="section-title">Gestión de Empleados</h2>
+                <p class="section-subtitle">
+                    Aprende a filtrar, buscar y seleccionar empleados de manera eficiente para la configuración de turnos.
+                </p>
+
+                <div class="interface-mockup">
+                    <div class="mockup-window">
+                        <div class="mockup-titlebar">Panel de Empleados - Filtrado y Selección</div>
+                        <div class="mockup-content" style="min-height: 500px;">
+                            <div class="mockup-panel" style="width: 100%; padding: 30px;">
+                                <div style="background: var(--gray-50); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">🔍 Filtros de Búsqueda</h4>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                                        <input class="mockup-input" placeholder="Buscar por nombre..." value="María">
+                                        <select class="mockup-input">
+                                            <option>Grupo: Desarrollo</option>
+                                            <option>Grupo: Marketing</option>
+                                            <option>Grupo: Ventas</option>
+                                        </select>
+                                        <select class="mockup-input">
+                                            <option>Item: Frontend</option>
+                                            <option>Item: Backend</option>
+                                            <option>Item: QA</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; gap: 10px;">
+                                        <button class="mockup-button">Aplicar Filtros</button>
+                                        <button class="mockup-button secondary">Limpiar</button>
+                                        <button class="mockup-button">Seleccionar Todos</button>
+                                        <button class="mockup-button secondary">Deseleccionar</button>
+                                    </div>
+                                </div>
+
+                                <div style="background: white; border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden;">
+                                    <div style="background: var(--gray-100); padding: 15px; font-weight: bold; border-bottom: 1px solid var(--gray-200);">
+                                        <div style="display: grid; grid-template-columns: 50px 1fr 1fr 1fr; gap: 15px;">
+                                            <span>Sel.</span>
+                                            <span>Nombre</span>
+                                            <span>Email</span>
+                                            <span>Segmentación</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="padding: 10px;">
+                                        <div style="display: grid; grid-template-columns: 50px 1fr 1fr 1fr; gap: 15px; padding: 12px; background: #e3f2fd; border-radius: 6px; margin: 5px 0;">
+                                            <span style="color: var(--primary-color); font-weight: bold;">✓</span>
+                                            <span style="font-weight: 600;">María García</span>
+                                            <span>maria.garcia@empresa.com</span>
+                                            <span style="color: var(--gray-600);">Desarrollo > Frontend</span>
+                                        </div>
+                                        
+                                        <div style="display: grid; grid-template-columns: 50px 1fr 1fr 1fr; gap: 15px; padding: 12px; background: #e3f2fd; border-radius: 6px; margin: 5px 0;">
+                                            <span style="color: var(--primary-color); font-weight: bold;">✓</span>
+                                            <span style="font-weight: 600;">María López</span>
+                                            <span>maria.lopez@empresa.com</span>
+                                            <span style="color: var(--gray-600);">Desarrollo > Frontend</span>
+                                        </div>
+                                        
+                                        <div style="display: grid; grid-template-columns: 50px 1fr 1fr 1fr; gap: 15px; padding: 12px; background: var(--gray-50); border-radius: 6px; margin: 5px 0;">
+                                            <span style="color: var(--gray-400);">☐</span>
+                                            <span>Juan Pérez</span>
+                                            <span>juan.perez@empresa.com</span>
+                                            <span style="color: var(--gray-600);">Desarrollo > Backend</span>
+                                        </div>
+                                        
+                                        <div style="display: grid; grid-template-columns: 50px 1fr 1fr 1fr; gap: 15px; padding: 12px; background: var(--gray-50); border-radius: 6px; margin: 5px 0;">
+                                            <span style="color: var(--gray-400);">☐</span>
+                                            <span>Ana Martínez</span>
+                                            <span>ana.martinez@empresa.com</span>
+                                            <span style="color: var(--gray-600);">Marketing > Digital</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="background: var(--gray-50); padding: 15px; border-radius: 10px; margin-top: 20px;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                        <span><strong>Filtrados:</strong> 4 de 127 empleados</span>
+                                        <span><strong>Seleccionados:</strong> 2 empleados</span>
+                                        <span><strong>Grupos:</strong> 2 diferentes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Funciones de Filtrado</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">🔍</span>
+                        <h3 class="card-title">Búsqueda por Texto</h3>
+                        <p class="card-description">
+                            Busca empleados por nombre o email en tiempo real. 
+                            Útil cuando conoces el nombre específico.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🏷️</span>
+                        <h3 class="card-title">Filtro por Grupo</h3>
+                        <p class="card-description">
+                            Filtra por grupo de segmentación (ej: Desarrollo, Marketing). 
+                            Ideal para gestionar departamentos completos.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">📋</span>
+                        <h3 class="card-title">Filtro por Item</h3>
+                        <p class="card-description">
+                            Filtra por item específico (ej: Frontend, Backend). 
+                            Perfecto para roles especializados.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🧹</span>
+                        <h3 class="card-title">Limpiar Filtros</h3>
+                        <p class="card-description">
+                            Restaura la vista completa de empleados. 
+                            Útil para empezar una nueva selección.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Métodos de Selección</h3>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="process-number">1</div>
+                        <div class="process-title">Aplicar Filtros</div>
+                        <div class="process-description">Reduce la lista a empleados relevantes</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">2</div>
+                        <div class="process-title">Seleccionar</div>
+                        <div class="process-description">Individual o masivamente</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">3</div>
+                        <div class="process-title">Verificar</div>
+                        <div class="process-description">Confirmar selección correcta</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">4</div>
+                        <div class="process-title">Continuar</div>
+                        <div class="process-description">Proceder a configurar turnos</div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Tip de Eficiencia:</strong> Usa "Seleccionar Todos" después de aplicar filtros para seleccionar rápidamente grupos específicos de empleados.
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ Indicadores Visuales:</strong> Los empleados seleccionados se destacan en azul claro y muestran una marca de verificación (✓).
+                </div>
+            </div>
+
+            <!-- Configuración de Turnos -->
+            <div id="turnos" class="content-section">
+                <h2 class="section-title">Configuración de Turnos</h2>
+                <p class="section-subtitle">
+                    Domina la configuración de horarios, desde turnos simples hasta configuraciones complejas con múltiples horarios.
+                </p>
+
+                <div class="interface-mockup">
+                    <div class="mockup-window">
+                        <div class="mockup-titlebar">Panel de Configuración de Turnos</div>
+                        <div class="mockup-content" style="min-height: 600px;">
+                            <div class="mockup-panel" style="width: 100%; padding: 30px;">
+                                <!-- Información de fecha -->
+                                <div style="background: #e3f2fd; border: 1px solid var(--primary-color); border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+                                    <h4 style="color: var(--primary-color); margin-bottom: 10px;">📅 Fecha Seleccionada</h4>
+                                    <div style="font-size: 1.2rem; font-weight: bold; color: var(--gray-800);">Lunes, 15 de Junio de 2025</div>
+                                    <div style="font-size: 0.9rem; color: var(--gray-600); margin-top: 5px;">Día laborable • 2 empleados seleccionados</div>
+                                </div>
+
+                                <!-- Tipo de día -->
+                                <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+                                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">🏢 Tipo de Día</h4>
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: flex; align-items: center; margin-bottom: 10px; cursor: pointer;">
+                                            <input type="radio" checked style="margin-right: 10px;">
+                                            <span style="font-weight: 600;">💼 Día laborable</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                            <input type="radio" style="margin-right: 10px;">
+                                            <span>🏖️ Día no laborable</span>
+                                        </label>
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: var(--gray-600); font-style: italic;">
+                                        Los días laborables requieren al menos un horario de trabajo
+                                    </div>
+                                </div>
+
+                                <!-- Plantillas -->
+                                <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+                                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">📋 Plantillas Predefinidas</h4>
+                                    <select style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid var(--gray-300); border-radius: 6px;">
+                                        <option>Personalizado</option>
+                                        <option selected>09:00 - 17:00 (Horario estándar)</option>
+                                        <option>08:00 - 16:00 (Horario temprano)</option>
+                                        <option>10:00 - 18:00 (Horario tardío)</option>
+                                        <option>09:00 - 13:00 (Media jornada mañana)</option>
+                                        <option>14:00 - 18:00 (Media jornada tarde)</option>
+                                    </select>
+                                    <button class="mockup-button" style="width: 100%;">Aplicar Plantilla</button>
+                                </div>
+
+                                <!-- Horarios personalizados -->
+                                <div style="background: white; border: 1px solid var(--gray-200); border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+                                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">⏰ Horarios de Trabajo</h4>
+                                    
+                                    <!-- Horario 1 -->
+                                    <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                            <span style="font-weight: 600; color: var(--gray-700);">Horario 1:</span>
+                                            <button style="background: var(--danger-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">✕</button>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <input type="text" value="09:00" style="width: 70px; padding: 6px; border: 1px solid var(--gray-300); border-radius: 4px; text-align: center;">
+                                            <span style="color: var(--gray-600);">a</span>
+                                            <input type="text" value="17:00" style="width: 70px; padding: 6px; border: 1px solid var(--gray-300); border-radius: 4px; text-align: center;">
+                                            <span style="font-size: 0.8rem; color: var(--success-color); margin-left: 10px;">✓ Válido (8 horas)</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Horario 2 -->
+                                    <div style="background: #fff3cd; border: 1px solid var(--warning-color); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                            <span style="font-weight: 600; color: #856404;">Horario 2:</span>
+                                            <button style="background: var(--danger-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">✕</button>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <input type="text" value="19:00" style="width: 70px; padding: 6px; border: 1px solid var(--gray-300); border-radius: 4px; text-align: center;">
+                                            <span style="color: var(--gray-600);">a</span>
+                                            <input type="text" value="22:00" style="width: 70px; padding: 6px; border: 1px solid var(--gray-300); border-radius: 4px; text-align: center;">
+                                            <span style="font-size: 0.8rem; color: var(--warning-color); margin-left: 10px;">⚠️ Horario nocturno</span>
+                                        </div>
+                                    </div>
+
+                                    <button class="mockup-button" style="width: 100%; background: var(--success-color); margin-top: 10px;">+ Agregar Horario</button>
+                                    
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 10px; text-align: center;">
+                                        Máximo 5 horarios por día • Total: 11 horas configuradas
+                                    </div>
+                                </div>
+
+                                <!-- Botones de acción -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                                    <button class="mockup-button" style="padding: 12px; font-weight: bold;">📅 Aplicar a Día</button>
+                                    <button class="mockup-button" style="padding: 12px; background: var(--accent-color); font-weight: bold;">📊 Copiar Semana</button>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <button class="mockup-button secondary" style="padding: 10px;">🧹 Limpiar</button>
+                                    <button class="mockup-button" style="padding: 10px; background: var(--success-color);">💾 Guardar Config</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Tipos de Día</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">💼</span>
+                        <h3 class="card-title">Día Laborable</h3>
+                        <p class="card-description">
+                            Requiere al menos un horario de trabajo. 
+                            Ideal para días normales de oficina.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🏖️</span>
+                        <h3 class="card-title">Día No Laborable</h3>
+                        <p class="card-description">
+                            Sin horarios de trabajo. 
+                            Perfecto para feriados, vacaciones o días libres.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Plantillas Disponibles</h3>
+                <ul class="feature-list">
+                    <li>09:00 - 17:00 (Horario estándar de oficina)</li>
+                    <li>08:00 - 16:00 (Horario temprano)</li>
+                    <li>10:00 - 18:00 (Horario tardío)</li>
+                    <li>09:00 - 13:00 (Media jornada mañana)</li>
+                    <li>14:00 - 18:00 (Media jornada tarde)</li>
+                    <li>Personalizado (Configuración manual)</li>
+                </ul>
+
+                <div class="alert alert-warning">
+                    <strong>⚠️ Validaciones Automáticas:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Hora de fin debe ser posterior a la de inicio</li>
+                        <li>No se permiten solapamientos entre horarios</li>
+                        <li>Formato de hora debe ser válido (HH:MM)</li>
+                        <li>Días laborables requieren al menos un horario</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Flujos de Trabajo -->
+            <div id="flujos" class="content-section">
+                <h2 class="section-title">Flujos de Trabajo</h2>
+                <p class="section-subtitle">
+                    Casos de uso reales y flujos optimizados para diferentes escenarios de gestión de turnos.
+                </p>
+
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">Escenarios Comunes</h3>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">🏢</span>
+                        <h3 class="card-title">Configuración Semanal Estándar</h3>
+                        <p class="card-description">
+                            Para equipos con horarios regulares de lunes a viernes.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🎯</span>
+                        <h3 class="card-title">Gestión por Departamentos</h3>
+                        <p class="card-description">
+                            Configurar turnos específicos para diferentes áreas.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🌙</span>
+                        <h3 class="card-title">Turnos Especiales</h3>
+                        <p class="card-description">
+                            Horarios nocturnos, guardias y configuraciones complejas.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">📅</span>
+                        <h3 class="card-title">Gestión de Feriados</h3>
+                        <p class="card-description">
+                            Configurar días no laborables y fechas especiales.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px; color: var(--primary-color);">Flujo 1: Configuración Semanal Estándar</h3>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="process-number">1</div>
+                        <div class="process-title">Filtrar Equipo</div>
+                        <div class="process-description">Seleccionar departamento específico</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">2</div>
+                        <div class="process-title">Seleccionar Lunes</div>
+                        <div class="process-description">Configurar horario base</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">3</div>
+                        <div class="process-title">Aplicar Plantilla</div>
+                        <div class="process-description">Usar horario estándar 9-17</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">4</div>
+                        <div class="process-title">Copiar Semana</div>
+                        <div class="process-description">Extender a toda la semana</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">5</div>
+                        <div class="process-title">Enviar</div>
+                        <div class="process-description">Aplicar cambios</div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Tip para Equipos Grandes:</strong> Usa filtros por segmentación para configurar departamentos completos de una vez.
+                </div>
+
+                <h3 style="margin-top: 40px; color: var(--primary-color);">Flujo 2: Gestión de Turnos Rotativos</h3>
+                <ol style="margin: 20px 0; padding-left: 20px;">
+                    <li><strong>Semana 1:</strong> Configurar turno mañana (08:00-16:00) para Grupo A</li>
+                    <li><strong>Semana 2:</strong> Cambiar Grupo A a turno tarde (16:00-00:00)</li>
+                    <li><strong>Semana 3:</strong> Configurar Grupo A en turno noche (00:00-08:00)</li>
+                    <li><strong>Repetir ciclo:</strong> Usar configuraciones guardadas para rotar</li>
+                </ol>
+
+                <h3 style="margin-top: 40px; color: var(--primary-color);">Flujo 3: Gestión de Emergencias</h3>
+                <div class="alert alert-warning">
+                    <strong>🚨 Cambios de Último Momento:</strong>
+                    <ol style="margin-top: 10px; padding-left: 20px;">
+                        <li>Identificar empleados afectados usando filtros</li>
+                        <li>Seleccionar fechas específicas en el calendario</li>
+                        <li>Aplicar nueva configuración solo a esas fechas</li>
+                        <li>Verificar antes de enviar</li>
+                        <li>Enviar cambios inmediatamente</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Funciones Avanzadas -->
+            <div id="avanzado" class="content-section">
+                <h2 class="section-title">Funciones Avanzadas</h2>
+                <p class="section-subtitle">
+                    Domina las características más potentes del sistema para maximizar tu eficiencia.
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">📋</span>
+                        <h3 class="card-title">Guardar/Cargar Configuraciones</h3>
+                        <p class="card-description">
+                            Exporta configuraciones completas para reutilizar en el futuro.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🔄</span>
+                        <h3 class="card-title">Copiar Entre Semanas</h3>
+                        <p class="card-description">
+                            Replica configuraciones exitosas a múltiples períodos.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">💾</span>
+                        <h3 class="card-title">Sistema de Backups</h3>
+                        <p class="card-description">
+                            Recupera configuraciones desde respaldos automáticos.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">⚡</span>
+                        <h3 class="card-title">Aplicación Masiva</h3>
+                        <p class="card-description">
+                            Configura cientos de empleados simultáneamente.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Guardar y Cargar Configuraciones</h3>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="process-number">1</div>
+                        <div class="process-title">Configurar</div>
+                        <div class="process-description">Crear configuración completa</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">2</div>
+                        <div class="process-title">Guardar</div>
+                        <div class="process-description">Exportar a archivo JSON</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">3</div>
+                        <div class="process-title">Reutilizar</div>
+                        <div class="process-description">Cargar en futuras sesiones</div>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ Casos de Uso para Configuraciones Guardadas:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Plantillas mensuales recurrentes</li>
+                        <li>Configuraciones de temporada alta/baja</li>
+                        <li>Horarios especiales para proyectos</li>
+                        <li>Respaldo antes de cambios importantes</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Sistema de Backups Automáticos</h3>
+                <p>El sistema guarda automáticamente respaldos en estas situaciones:</p>
+                <ul class="feature-list">
+                    <li>Cada vez que cargas usuarios desde la API</li>
+                    <li>Antes de enviar turnos a Humand</li>
+                    <li>Al guardar configuraciones manualmente</li>
+                    <li>Cuando cargas configuraciones externas</li>
+                </ul>
+
+                <div class="alert alert-info">
+                    <strong>📁 Ubicación de Backups:</strong> Los archivos se guardan en la carpeta 'backups/' con nombres descriptivos que incluyen fecha y hora.
+                </div>
+            </div>
+
+            <!-- Mejores Prácticas -->
+            <div id="mejores-practicas" class="content-section">
+                <h2 class="section-title">Mejores Prácticas</h2>
+                <p class="section-subtitle">
+                    Consejos y estrategias para usar Humand Shift Manager de manera más eficiente y evitar errores comunes.
+                </p>
+
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">Flujo de Trabajo Recomendado</h3>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="process-number">1</div>
+                        <div class="process-title">Planificar</div>
+                        <div class="process-description">Definir horarios y empleados</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">2</div>
+                        <div class="process-title">Filtrar</div>
+                        <div class="process-description">Usar segmentaciones efectivas</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">3</div>
+                        <div class="process-title">Configurar</div>
+                        <div class="process-description">Aplicar plantillas y personalizar</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">4</div>
+                        <div class="process-title">Verificar</div>
+                        <div class="process-description">Revisar antes de enviar</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-number">5</div>
+                        <div class="process-title">Enviar</div>
+                        <div class="process-description">Aplicar cambios con confianza</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Consejos de Eficiencia</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">🎯</span>
+                        <h3 class="card-title">Usar Filtros Inteligentemente</h3>
+                        <p class="card-description">
+                            Combina filtros de grupo e item para selecciones precisas. 
+                            Evita seleccionar empleados uno por uno.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">📋</span>
+                        <h3 class="card-title">Aprovechar Plantillas</h3>
+                        <p class="card-description">
+                            Usa plantillas predefinidas como punto de partida. 
+                            Personaliza solo cuando sea necesario.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">📅</span>
+                        <h3 class="card-title">Copiar Configuraciones</h3>
+                        <p class="card-description">
+                            Configura un día perfectamente, luego copia a toda la semana. 
+                            Ahorra tiempo significativo.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">💾</span>
+                        <h3 class="card-title">Guardar Frecuentemente</h3>
+                        <p class="card-description">
+                            Exporta configuraciones exitosas para reutilizar. 
+                            Crea tu biblioteca de plantillas personalizadas.
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Lista de Verificación Pre-Envío</h3>
+                <div class="alert alert-success">
+                    <strong>✅ Antes de Enviar Turnos:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Empleados correctos seleccionados</li>
+                        <li>Fechas válidas configuradas</li>
+                        <li>Horarios sin solapamientos</li>
+                        <li>Días laborables tienen al menos un horario</li>
+                        <li>Conexión API estable</li>
+                        <li>Backup reciente disponible</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Errores Comunes a Evitar</h3>
+                <div class="alert alert-danger">
+                    <strong>❌ Evita Estos Errores:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>No verificar la selección de empleados antes de configurar</li>
+                        <li>Configurar horarios con solapamientos</li>
+                        <li>Olvidar marcar días especiales como no laborables</li>
+                        <li>No revisar el resultado del envío</li>
+                        <li>No mantener backups de configuraciones importantes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Solución de Problemas -->
+            <div id="problemas" class="content-section">
+                <h2 class="section-title">Solución de Problemas</h2>
+                <p class="section-subtitle">
+                    Guía para resolver los problemas más comunes y saber qué hacer cuando algo no funciona como esperado.
+                </p>
+
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">Problemas de Conexión</h3>
+                <div class="alert alert-danger">
+                    <strong>❌ Error: "No se pudo conectar"</strong>
+                    <p style="margin-top: 10px;"><strong>Soluciones:</strong></p>
+                    <ol style="margin-top: 5px; padding-left: 20px;">
+                        <li>Verificar que la API Key sea correcta</li>
+                        <li>Confirmar acceso a internet</li>
+                        <li>Revisar estado de la API de Humand</li>
+                        <li>Intentar reconectar después de unos minutos</li>
+                        <li>Contactar al administrador si persiste</li>
+                    </ol>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Problemas de Configuración</h3>
+                <div class="alert alert-warning">
+                    <strong>⚠️ Error: "Formato de hora inválido"</strong>
+                    <p style="margin-top: 10px;"><strong>Soluciones:</strong></p>
+                    <ol style="margin-top: 5px; padding-left: 20px;">
+                        <li>Usar formato HH:MM (ejemplo: 09:00)</li>
+                        <li>Verificar que la hora de fin sea posterior a la de inicio</li>
+                        <li>Evitar solapamientos entre horarios del mismo día</li>
+                        <li>Usar plantillas predefinidas como base</li>
+                    </ol>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Problemas de Envío</h3>
+                <div class="alert alert-warning">
+                    <strong>⚠️ Error: "Algunos turnos fueron omitidos"</strong>
+                    <p style="margin-top: 10px;"><strong>Qué hacer:</strong></p>
+                    <ol style="margin-top: 5px; padding-left: 20px;">
+                        <li>Revisar el mensaje detallado del resultado</li>
+                        <li>Verificar que los empleados seleccionados estén activos</li>
+                        <li>Confirmar que las fechas sean válidas</li>
+                        <li>Revisar los logs de backup para más detalles</li>
+                        <li>Intentar reenviar solo los turnos fallidos</li>
+                    </ol>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">Recursos de Ayuda</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-icon">📋</span>
+                        <h3 class="card-title">Logs de Backup</h3>
+                        <p class="card-description">
+                            Revisa los archivos en la carpeta 'backups/' para información detallada sobre operaciones.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">🔄</span>
+                        <h3 class="card-title">Reiniciar Aplicación</h3>
+                        <p class="card-description">
+                            Cierra y vuelve a abrir el programa para resolver problemas temporales.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">💾</span>
+                        <h3 class="card-title">Restaurar Backup</h3>
+                        <p class="card-description">
+                            Usa "Cargar Configuración" para restaurar desde un backup automático.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-icon">📞</span>
+                        <h3 class="card-title">Soporte Técnico</h3>
+                        <p class="card-description">
+                            Contacta al administrador del sistema con detalles específicos del problema.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Información Útil para Soporte:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Mensaje de error exacto</li>
+                        <li>Pasos que llevaron al problema</li>
+                        <li>Cantidad de empleados y fechas involucradas</li>
+                        <li>Hora aproximada cuando ocurrió el problema</li>
+                        <li>Archivos de backup recientes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Menu -->
+        <div class="quick-access">
+            <div class="quick-access-item active" onclick="showSection('inicio')"></div>
+            <div class="quick-access-item" onclick="showSection('primeros-pasos')"></div>
+            <div class="quick-access-item" onclick="showSection('empleados')"></div>
+            <div class="quick-access-item" onclick="showSection('turnos')"></div>
+            <div class="quick-access-item" onclick="showSection('flujos')"></div>
+            <div class="quick-access-item" onclick="showSection('avanzado')"></div>
+            <div class="quick-access-item" onclick="showSection('mejores-practicas')"></div>
+            <div class="quick-access-item" onclick="showSection('problemas')"></div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Mostrar la sección seleccionada
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Actualizar navegación
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Activar tab correspondiente
+            const activeTab = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
+            if (activeTab && activeTab.classList.contains('nav-tab')) {
+                activeTab.classList.add('active');
+            }
+
+            // Actualizar quick access
+            const quickAccessItems = document.querySelectorAll('.quick-access-item');
+            quickAccessItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Activar quick access correspondiente
+            const sectionOrder = ['inicio', 'primeros-pasos', 'empleados', 'turnos', 'flujos', 'avanzado', 'mejores-practicas', 'problemas'];
+            const sectionIndex = sectionOrder.indexOf(sectionId);
+            if (sectionIndex !== -1 && quickAccessItems[sectionIndex]) {
+                quickAccessItems[sectionIndex].classList.add('active');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Inicializar con la primera sección activa
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('inicio');
+        });
+    </script>
+</body>
+</html>
